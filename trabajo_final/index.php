@@ -69,7 +69,28 @@
                     <option value="Otra">Otra</option>
                 </select>
             </div>
+                <div>
+                    <label class="block text-purple-300 text-sm font-bold mb-2">Ubicación en la Fiesta</label>
+                    <select name="id_zona" required 
+                        class="w-full p-3 rounded bg-gray-800 border border-gray-600 focus:border-purple-500 text-white outline-none transition">
+                        <option value="">Selecciona tu zona...</option>
+                        <?php
+                        // Esto jalará las zonas de tu tabla en phpMyAdmin
+                        $sql_zonas = "SELECT z.id, z.nombre, z.cupo_maximo, 
+                                    (SELECT COUNT(*) FROM asistentes WHERE id_zona = z.id) as ocupados 
+                                    FROM zonas z";
+                        $res = mysqli_query($conexion, $sql_zonas);
 
+                        while($z = mysqli_fetch_assoc($res)):
+                            $vacantes = $z['cupo_maximo'] - $z['ocupados'];
+                            if($vacantes > 0): ?>
+                                <option value="<?= $z['id'] ?>"><?= $z['nombre'] ?> (<?= $vacantes ?> vacantes)</option>
+                            <?php else: ?>
+                                <option disabled class="text-red-500"><?= $z['nombre'] ?> (AGOTADO)</option>
+                            <?php endif;
+                        endwhile; ?>
+                    </select>
+                </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-purple-300 text-sm font-bold mb-2">DNI</label>
