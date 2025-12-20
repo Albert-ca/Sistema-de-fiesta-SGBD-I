@@ -5,7 +5,7 @@ session_start(); // Inicia el motor de sesiones
 if(!isset($_SESSION['admin_logeado'])){
     header("Location: login.php");
     exit();
-}
+}   
 
 include("conexion.php"); // Conexión a la DB de la UNALM
 // 1. Datos para el gráfico de carreras
